@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Modern Portfolio Design System with Matrix-inspired Dark Theme */
+/* Sistema de Diseño de Portafolio Moderno con Tema Oscuro inspirado en Matrix */
 
 @layer base {
   :root {
-    /* Dark modern theme */
+    /* Tema oscuro moderno */
     --background: 190 21% 12%;    
     --foreground: 210 40% 95%;
 
@@ -16,12 +16,12 @@
     --popover: 220 13% 11%;
     --popover-foreground: 210 40% 95%;
 
-    /* Matrix-inspired green accent */
+    /* Acento verde inspirado en Matrix */
     --primary: 142 76% 36%;
     --primary-foreground: 220 13% 9%;
     --primary-glow: 142 76% 50%;
 
-    /* Subtle secondary colors */
+    /* Colores secundarios sutiles */
     --secondary: 217 19% 18%;
     --secondary-foreground: 210 40% 95%;
 
@@ -40,21 +40,21 @@
 
     --radius: 0.75rem;
 
-    /* Custom design tokens */
+    /* Tokens de diseño personalizados */
     --tech-blue: 217 91% 60%;
     --tech-purple: 262 83% 58%;
     --glass-bg: 220 13% 11% / 0.8;
     
-    /* Gradients */
+    /* Degradados */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-tech: linear-gradient(135deg, hsl(var(--tech-blue)), hsl(var(--tech-purple)));
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(var(--primary-glow) / 0.3) 0%, transparent 70%);
     
-    /* Shadows with glow effects */
+    /* Sombras con efectos de resplandor */
     --shadow-glow: 0 0 30px hsl(var(--primary-glow) / 0.4);
     --shadow-card: 0 8px 32px hsla(221, 15%, 25%, 0.6);
     
-    /* Animation variables */
+    /* Variables de animación */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -125,25 +125,25 @@
     background-attachment: fixed;
   }
 
-  /* Custom glass effect utility */
+  /* Utilidad de efecto vidrio esmerilado */
   .glass {
     @apply backdrop-blur-sm border border-border/50;
     background: hsl(var(--glass-bg));
   }
 
-  /* Glowing text effect */
+  /* Efecto de texto brillante */
   .text-glow {
     text-shadow: 0 0 10px hsl(var(--primary-glow) / 0.8);
   }
 
-  /* Monospace font for code/terminal effects */
+  /* Fuente monoespaciada para efectos de código/terminal */
   .font-mono {
     font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
   }
 }
 
 @layer components {
-  /* Matrix-style scrolling background effect */
+  /* Efecto de fondo con desplazamiento estilo Matrix */
   .matrix-bg {
     position: relative;
     overflow: hidden;
@@ -170,7 +170,7 @@
     100% { transform: translateX(0); }
   }
 
-  /* Hover glow effects */
+  /* Efectos de resplandor al pasar el ratón */
   .hover-glow {
     transition: var(--transition-smooth);
   }
@@ -180,7 +180,7 @@
     transform: translateY(-2px);
   }
 
-  /* Typing cursor animation */
+  /* Animación de cursor de escritura */
   .typing-cursor::after {
     content: '|';
     animation: blink 1s infinite;
@@ -192,7 +192,7 @@
     51%, 100% { opacity: 0; }
   }
 
-  /* Fun entrance animations */
+  /* Divertidas animaciones de entrada */
   .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
   }

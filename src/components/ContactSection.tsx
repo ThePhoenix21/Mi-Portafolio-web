@@ -10,7 +10,7 @@ const ContactSection: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
+    // Manejar el envío del formulario aquí
     console.log('Form submitted');
   };
 

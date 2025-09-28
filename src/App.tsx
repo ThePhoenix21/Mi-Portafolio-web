@@ -15,7 +15,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* Agregar todas las rutas personalizadas antes de la ruta de notfound */}
+          {/* Agregar todas las rutas personalizadas antes de la ruta de página no encontrada */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

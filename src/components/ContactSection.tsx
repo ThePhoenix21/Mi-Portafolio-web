@@ -24,11 +24,11 @@ const ContactSection: React.FC = () => {
               titleInView ? 'animate-fade-in-up' : 'animate-hidden'
             }`}
           >
-            Get In <span className="text-primary-glow">Touch</span>
+            Medios de <span className="text-primary-glow">Contacto</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Let's discuss your next project or just say hello
+          “Si quieres charlar sobre tecnología o tu próximo proyecto aquí estoy.”
           </p>
         </div>
         
@@ -40,10 +40,9 @@ const ContactSection: React.FC = () => {
             }`}
           >
             <div>
-              <h3 className="text-2xl font-bold text-foreground mb-6">Let's Connect</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-6">Hablemos</h3>
               <p className="text-muted-foreground mb-8">
-                I'm always interested in new opportunities and interesting projects. 
-                Whether you have a question or just want to say hi, feel free to reach out!
+                Me encanta conocer nuevas ideas y proyectos. Si quieres hacerme una pregunta o simplemente decir hola, ¡estaré encantado de escucharte!
               </p>
             </div>
             
@@ -56,8 +55,8 @@ const ContactSection: React.FC = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Email</div>
-                    <div className="text-foreground">your.email@example.com</div>
+                    <div className="text-sm text-muted-foreground">Correo</div>
+                    <div className="text-foreground">jamescorcam@gmail.com</div>
                   </div>
                 </CardContent>
               </Card>
@@ -71,7 +70,7 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">Twitter</div>
-                    <div className="text-foreground">@yourusername</div>
+                    <div className="text-foreground">@DarkGho16702142</div>
                   </div>
                 </CardContent>
               </Card>
@@ -85,7 +84,7 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">GitHub</div>
-                    <div className="text-foreground">github.com/yourusername</div>
+                    <div className="text-foreground">github.com/ThePhoenix21</div>
                   </div>
                 </CardContent>
               </Card>

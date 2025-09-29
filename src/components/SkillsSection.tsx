@@ -5,35 +5,95 @@ import { useInViewAnimation } from '@/hooks/useInViewAnimation';
 const SkillsSection: React.FC = () => {
   const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
   const { ref: skill1Ref, isInView: skill1InView } = useInViewAnimation({ delay: 200 });
-  const { ref: skill2Ref, isInView: skill2InView } = useInViewAnimation({ delay: 400 });
-  const { ref: skill3Ref, isInView: skill3InView } = useInViewAnimation({ delay: 600 });
-  const { ref: skill4Ref, isInView: skill4InView } = useInViewAnimation({ delay: 800 });
+  const { ref: skill2Ref, isInView: skill2InView } = useInViewAnimation({ delay: 250 });
+  const { ref: skill3Ref, isInView: skill3InView } = useInViewAnimation({ delay: 300 });
+  const { ref: skill4Ref, isInView: skill4InView } = useInViewAnimation({ delay: 350 });
+  const { ref: skill5Ref, isInView: skill5InView } = useInViewAnimation({ delay: 400 });
+  const { ref: skill6Ref, isInView: skill6InView } = useInViewAnimation({ delay: 450 });
+  const { ref: skill7Ref, isInView: skill7InView } = useInViewAnimation({ delay: 500 });
 
   const skillCategories = [
     {
       title: 'Frontend',
       icon: '🎨',
-      skills: ['React', 'Vue.js', 'TypeScript', 'Tailwind CSS', 'Next.js', 'Sass'],
+      skills: [
+        'HTML5',
+        'CSS3',
+        'Javascript',
+        'TypeScript',
+        'React',
+        'Next.js',
+        'Astro',
+        'Zustand',
+        'Tailwind CSS',
+        'Sass'
+      ]      
     },
     {
       title: 'Backend',
       icon: '⚙️',
-      skills: ['Node.js', 'Python', 'Express', 'Django', 'PostgreSQL', 'MongoDB'],
+      skills: [
+        'C#',
+        'ASP.NET Core',
+        'Entity Framework Core',
+        'Node.js',
+        'Express.js',
+        'Nest.js',
+        'Prisma',
+        'Mongoose'
+      ],
     },
     {
-      title: 'Tools & DevOps',
+      title: 'Base de datos',
+      icon: '🗄️',
+      skills: [
+        'SQL Server',
+        'MySQL',
+        'PostgreSQL',
+        'MongoDB',
+        'GraphQL',
+        'REST APIs'
+      ],
+    },
+    {
+      title: 'Arquitecturas & Patrones',
+      icon: '🏛️',
+      skills: [
+        // FrontEnd
+        'Module-Based Structure (Frontend)',
+        'Component-Based Architecture (Frontend)',
+        // BackEnd
+        'Module-Based (Backend)',
+        'Clean Architecture (Backend)',
+        'Layered Architecture (Backend)'
+      ],
+    },
+    {
+      title: 'Herramientas de desarrollo',
       icon: '🛠️',
-      skills: ['Git', 'Docker', 'AWS', 'CI/CD', 'Linux', 'Kubernetes'],
+      skills: ['Vite', 'Bun', 'npm', 'pnpm', 'Docker']
     },
     {
-      title: 'Mobile & Others',
-      icon: '📱',
-      skills: ['React Native', 'Flutter', 'GraphQL', 'REST APIs', 'Firebase', 'Socket.io'],
+      title: 'IDE & Gestión de bases de datos',
+      icon: '💻',
+      skills: [
+        'Visual Studio Code',
+        'Visual Studio 2022',
+        'SQL Server Management Studio',
+        'pgAdmin',
+        'Mongo Compass',
+        'MySQL Workbench'
+      ]
     },
+    {
+      title: 'APIs & Versionado',
+      icon: '🔗',
+      skills: ['Axios', 'fetch', 'Postman', 'Git', 'Sourcetree']
+    }
   ];
 
-  const skillRefs = [skill1Ref, skill2Ref, skill3Ref, skill4Ref];
-  const skillInViews = [skill1InView, skill2InView, skill3InView, skill4InView];
+  const skillRefs = [skill1Ref, skill2Ref, skill3Ref, skill4Ref, skill5Ref, skill6Ref, skill7Ref];
+  const skillInViews = [skill1InView, skill2InView, skill3InView, skill4InView, skill5InView, skill6InView, skill7InView];
 
   return (
     <section id="skills" className="py-20 bg-background">
@@ -45,11 +105,11 @@ const SkillsSection: React.FC = () => {
               titleInView ? 'animate-slide-in-right' : 'animate-hidden'
             }`}
           >
-            Technical <span className="text-primary-glow">Skills</span>
+            Habilidades <span className="text-primary-glow">técnicas</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Technologies and tools I use to bring ideas to life
+            Tecnologías y herramientas que uso para dar vida a ideas
           </p>
         </div>
         

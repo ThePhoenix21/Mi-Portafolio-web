@@ -48,11 +48,11 @@ const ProjectsSection: React.FC = () => {
               titleInView ? 'animate-slide-in-left' : 'opacity-0 -translate-x-4'
             }`}
           >
-            Featured <span className="text-primary-glow">Projects</span>
+            Proyectos <span className="text-primary-glow">Destacados</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A showcase of my recent work and the technologies I'm passionate about
+            Una muestra de mis trabajo más reciente y de las tecnologías que uso.
           </p>
         </div>
         

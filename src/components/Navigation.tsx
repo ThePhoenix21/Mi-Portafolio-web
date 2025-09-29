@@ -83,35 +83,35 @@ const Navigation: React.FC = () => {
               onClick={() => scrollToSection('home')}
               className="text-foreground hover:text-primary-glow transition-colors"
             >
-              Home
+              Inicio
             </Button>
             <Button 
               variant="ghost" 
               onClick={() => scrollToSection('about')}
               className="text-foreground hover:text-primary-glow transition-colors"
             >
-              About
+              Sobre mí
             </Button>
             <Button 
               variant="ghost" 
               onClick={() => scrollToSection('projects')}
               className="text-foreground hover:text-primary-glow transition-colors"
             >
-              Projects
+              Proyectos
             </Button>
             <Button 
               variant="ghost" 
               onClick={() => scrollToSection('skills')}
               className="text-foreground hover:text-primary-glow transition-colors"
             >
-              Skills
+              Habilidades
             </Button>
             <Button 
               variant="ghost" 
               onClick={() => scrollToSection('contact')}
               className="text-foreground hover:text-primary-glow transition-colors"
             >
-              Contact
+              Contacto
             </Button>
           </div>
 

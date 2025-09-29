@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Tema oscuro moderno */
-    --background: 190 21% 12%;    
+    --background: 190 21% 12%;
     --foreground: 210 40% 95%;
 
     --card: 220 13% 11%;

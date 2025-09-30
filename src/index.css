@@ -143,33 +143,6 @@
 }
 
 @layer components {
-  /* Efecto de fondo con desplazamiento estilo Matrix */
-  .matrix-bg {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .matrix-bg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 98px,
-      hsl(var(--primary) / 0.03) 100px
-    );
-    animation: matrix-slide 20s linear infinite;
-  }
-
-  @keyframes matrix-slide {
-    0% { transform: translateX(-100px); }
-    100% { transform: translateX(0); }
-  }
-
   /* Efectos de resplandor al pasar el ratón */
   .hover-glow {
     transition: var(--transition-smooth);

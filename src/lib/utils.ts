@@ -21,3 +21,59 @@ export const calculateYearsOfExperience = (): number => {
   
   return Math.max(0, years);
 };
+
+/**
+ * Desplaza la ventana suavemente hasta la sección con el ID especificado
+ * @param sectionId - El ID de la sección a la que se debe hacer scroll
+ */
+export const scrollToSection = (sectionId: string): void => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
+// Función que genera un manejador para descargar el CV, evitando descargas múltiples
+// si el usuario hace clic repetidamente. El estado se mantiene entre llamadas.
+const DOWNLOAD_COOLDOWN = 3000; // 3 segundos de espera entre descargas
+
+type DownloadHandler = {
+  handler: () => void;
+  isDownloading: boolean;
+  setUpdateState: (updater: (value: boolean) => void) => void;
+};
+export const createDownloadCVHandler = () => {
+  let isDownloading = false;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  const handler = () => {
+    if (isDownloading) return;
+
+    isDownloading = true;
+
+    const link = document.createElement('a');
+    link.href = '/cv-james-cordova.pdf';
+    link.download = 'CV-James-Cordova.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // liberamos después de 3 segundos
+    timeoutId = setTimeout(() => {
+      isDownloading = false;
+    }, 1500);
+  };
+
+  const cleanup = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    isDownloading = false;
+  };
+
+  return { handler, cleanup };
+};

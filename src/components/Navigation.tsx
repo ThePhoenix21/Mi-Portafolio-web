@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { AnimatedText } from './AnimatedText';
+import { scrollToSection } from '@/lib/utils';
 
 const separatePhrases = [
   ["El primer lenguaje de programación que aprendí fue VBA.", ""],
@@ -25,6 +26,7 @@ const separatePhrases = [
 
 const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,32 +37,14 @@ const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const phrases1 = separatePhrases.map(sp => sp[0]);
+  const phrases2 = separatePhrases.map(sp => sp[1]);
+
+  const handleAnimationEnd = () => {
+    setTimeout(() => {
+        setIndex(prev => (prev + 1) % separatePhrases.length);
+    }, 6000);
   };
-
-  const navigate = useNavigate();
-    const [index, setIndex] = useState(0);
-    const menuItems = [
-        { label: "Home", path: "/" },
-        { label: "About me", path: "/about" },
-        { label: "Projects", path: "/Projects" },
-        { label: "Contact", path: "/Contact" }
-    ];
-    
-    const phrases1 = separatePhrases.map(sp => sp[0]);
-    const phrases2 = separatePhrases.map(sp => sp[1]);
-
-    
-
-    const handleAnimationEnd = () => {
-        setTimeout(() => {
-            setIndex(prev => (prev + 1) % separatePhrases.length);
-        }, 6000);
-    };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${

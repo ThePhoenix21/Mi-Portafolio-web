@@ -49,14 +49,14 @@ const AboutSection: React.FC = () => {
           >
             <Card className="glass hover-glow animate-delay-100">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-primary-glow mb-2">{calculateYearsOfExperience()}</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">años de prácticas profesionales</div>
+                <div className="text-3xl font-bold text-primary-glow mb-2">{calculateYearsOfExperience()}+</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">años de experiencia</div>
               </CardContent>
             </Card>
             
             <Card className="glass hover-glow animate-delay-200">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-primary-glow mb-2">2+</div>
+                <div className="text-3xl font-bold text-primary-glow mb-2">5+</div>
                 <div className="text-sm text-muted-foreground uppercase tracking-wide">Proyectos completados</div>
               </CardContent>
             </Card>

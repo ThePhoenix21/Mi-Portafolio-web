@@ -24,7 +24,7 @@ const ContactSection: React.FC = () => {
               titleInView ? 'animate-fade-in-up' : 'animate-hidden'
             }`}
           >
-            Medios de <span className="text-primary-glow">Contacto</span>
+            Ponte en <span className="text-primary-glow">Contacto</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

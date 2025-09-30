@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="text-muted-foreground mb-4 md:mb-0">
-            © 2024 James Cristhofer Cordova Camones. Web construida con React & TailwindCSS.
+            © 2024 James Cristhofer Cordova Camones. Web construida con React & Tailwind CSS.
           </div>
           <div className="flex space-x-6">
             <a 

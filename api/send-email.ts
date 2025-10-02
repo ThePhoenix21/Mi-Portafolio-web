@@ -37,6 +37,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ message: 'Faltan campos obligatorios' });
   }
 
+  // Debug: mostrar variables de entorno
+  console.log('Variables de entorno:');
+  console.log({
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_PASS: !!process.env.SMTP_PASS ? '*****' : undefined, // no mostrar contraseña
+    CONTACT_EMAIL: process.env.CONTACT_EMAIL
+  });
+
   try {
     console.log('Configurando transporter de Nodemailer...');
     const transporter = nodemailer.createTransport({
@@ -49,7 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
     });
 
-    console.log('Enviando correo a:', process.env.CONTACT_EMAIL);
+    console.log('Enviando correo...');
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: process.env.CONTACT_EMAIL,
@@ -57,7 +67,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       text: `De: ${nombre} ${apellido} <${email}>\n\n${mensaje}`,
     });
 
-    console.log('Correo enviado correctamente');
+    console.log('Correo enviado correctamente a:', process.env.CONTACT_EMAIL);
     res.status(200).json({ message: 'Correo enviado correctamente' });
   } catch (error) {
     console.error('Error enviando correo:', error);

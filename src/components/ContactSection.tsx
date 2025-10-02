@@ -17,6 +17,7 @@ const ContactSection: React.FC = () => {
     mensaje: ''
   });
 
+
   const contactCards = [
     {
       title: "Correo",
@@ -49,7 +50,6 @@ const ContactSection: React.FC = () => {
       delay: 300,
     },
   ];
-
   const formFields = [
     { name: "nombre", placeholder: "Nombre", type: "text", half: true, required: true },
     { name: "apellido", placeholder: "Apellido", type: "text", half: true, required: true },
@@ -59,6 +59,7 @@ const ContactSection: React.FC = () => {
 
   const textareaField = { name: "mensaje", placeholder: "Mensaje...", rows: 5, required: true };
 
+  //funcion para manejar los cambios en el formulario
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -67,40 +68,29 @@ const ContactSection: React.FC = () => {
     }));
   };
 
+  //funcion para manejar el envio del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('http://localhost:3001/send-email', {
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        setSubmitStatus({
-          success: true,
-          message: '¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.'
-        });        
-        setFormData({
-          nombre: '',
-          apellido: '',
-          email: '',
-          asunto: '',
-          mensaje: ''
-        });
-      } else {
+      if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Error al enviar el mensaje');
       }
+
+      setSubmitStatus({ success: true, message: '¡Mensaje enviado con éxito!' });
+      setFormData({ nombre: '', apellido: '', email: '', asunto: '', mensaje: '' });
+
     } catch (error) {
-      console.error('Error al enviar el mensaje:', error);
-      setSubmitStatus({
-        success: false,
-        message: error instanceof Error ? error.message : 'Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.'
-      });
+      setSubmitStatus({ success: false, message: error instanceof Error ? error.message : 'Error desconocido' });
     } finally {
       setIsSubmitting(false);
     }

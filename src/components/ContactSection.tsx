@@ -52,7 +52,7 @@ const ContactSection: React.FC = () => {
 
     console.log("invocando al backend: ",process.env.REACT_APP_API_URL);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
+      const response = await fetch(`https://personalbackend-production-b5b7.up.railway.app/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

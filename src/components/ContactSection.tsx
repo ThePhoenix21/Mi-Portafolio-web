@@ -50,7 +50,10 @@ const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    console.log("invocando al backend: ",process.env.VITE_API_URL);
+    console.log('Variables de entorno:', {
+      VITE_API_URL: import.meta.env.VITE_API_URL,
+      NODE_ENV: import.meta.env.MODE
+    });
     try {
       const response = await fetch(`${process.env.VITE_API_URL}/contact`, {
         method: 'POST',

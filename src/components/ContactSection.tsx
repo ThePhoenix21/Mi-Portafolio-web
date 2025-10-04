@@ -50,6 +50,7 @@ const ContactSection: React.FC = () => {
       delay: 300,
     },
   ];
+  
   const formFields = [
     { name: "nombre", placeholder: "Nombre", type: "text", half: true, required: true },
     { name: "apellido", placeholder: "Apellido", type: "text", half: true, required: true },
@@ -75,7 +76,7 @@ const ContactSection: React.FC = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('/api/send-email', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

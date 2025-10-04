@@ -75,6 +75,7 @@ const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    console.log("invocando al backend: ",process.env.REACT_APP_API_URL);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
         method: 'POST',

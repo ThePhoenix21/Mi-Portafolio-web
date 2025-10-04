@@ -23,17 +23,60 @@ export const calculateYearsOfExperience = (): number => {
 };
 
 /**
+ * Función de scroll suave personalizada
+ */
+const smoothScrollTo = (targetPosition: number, duration: number = 800): void => {
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+
+  const animation = (currentTime: number) => {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const run = easeInOutQuad(
+      timeElapsed,
+      startPosition,
+      distance,
+      duration
+    );
+    window.scrollTo(0, run);
+    if (timeElapsed < duration) {
+      window.requestAnimationFrame(animation);
+    }
+  };
+
+  // Función de easing para una transición suave
+  const easeInOutQuad = (t: number, b: number, c: number, d: number): number => {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+  };
+
+  window.requestAnimationFrame(animation);
+};
+
+/**
  * Desplaza la ventana suavemente hasta la sección con el ID especificado
  * @param sectionId - El ID de la sección a la que se debe hacer scroll
  */
 export const scrollToSection = (sectionId: string): void => {
+  if (typeof window === 'undefined') return;
+  
   const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
+  if (!element) return;
+
+  // Calcular la posición con un offset para el header
+  const headerOffset = 80;
+  const elementPosition = element.getBoundingClientRect().top;
+  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+  // Usar nuestra función de scroll suave personalizada
+  smoothScrollTo(offsetPosition);
+
+  // Manejo de foco para accesibilidad
+  element.setAttribute('tabindex', '-1');
+  element.focus({ preventScroll: true });
 };
 
 // Función que genera un manejador para descargar el CV, evitando descargas múltiples

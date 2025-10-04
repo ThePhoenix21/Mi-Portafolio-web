@@ -50,9 +50,9 @@ const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    console.log("invocando al backend: ",process.env.REACT_APP_API_URL);
+    console.log("invocando al backend: ",process.env.VITE_API_URL);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
+      const response = await fetch(`${process.env.VITE_API_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

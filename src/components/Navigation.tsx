@@ -6,7 +6,7 @@ import { scrollToSection } from '@/lib/utils';
 
 const separatePhrases = [
   ["El primer lenguaje de programación que aprendí fue VBA.", ""],
-  ["A mi también me gusta salir de viaje", "con amigos!"],
+  ["A mi también me gusta salir de viaje con amigos!", ""],
   ["Soy un desarrollador con ganas", "de seguir creciendo día a día!"],
   ["Disfruto explorar nuevos lugares", "y probar comidas diferentes."],
   ["Soy programador gracias a mis amigos,", "que me inspiraron a aprender."],
@@ -17,7 +17,7 @@ const separatePhrases = [
   ["A veces la IA quiere que reescriba medio proyecto", "para arreglar un detalle minusculo… qué linda."],
   ["ChatGPT es mi maestra, Google es mi libro de curso", "y YouTube son mis clases online."],
   ["cuando no entiendo algo investigo y entonces", "entiendo todavía menos... pero soy terco y sigo"],
-  ["me gusta equivocarme, no entender", "porque sin esos gloriosos errores, mi vida sería aburridísima."],
+  ["me gusta equivocarme, no entender porque sin esos", "gloriosos errores, mi vida sería aburridísima."],
   ["si fuera químico, seguro ya habría hecho explotar algo…", "por suerte los bucles infinitos no matan a nadie… creo."],
   ["un bug me pidió ser su padrino pero el compilador", "me guiñó el ojo justo antes de fallar"],
   ["Me gusta perderme en mundos virtuales… y a veces también ganar.", ""],
@@ -51,16 +51,16 @@ const Navigation: React.FC = () => {
       isScrolled ? 'glass shadow-card' : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold text-primary-glow font-mono">
-            &lt;Portfolio/&gt;
+        <div className="flex flex-col lg:flex-row items-center justify-between">
+          <div className="flex flex-col lg:flex-row lg:w-full items-center lg:justify-between py-4 lg:py-0 w-screen h-full">
+            <div className="hidden text-xl font-bold text-primary-glow font-mono pb-2 lg:pb-0 md:block">
+              &lt;Portfolio/&gt;
+            </div>
+            <div className="hidden md:flex flex-col h-[3rem] w-[460px] lg:w-[460px] px-6">
+              <AnimatedText phrases={phrases1} index={index} onAnimationEnd={handleAnimationEnd} />
+              <AnimatedText phrases={phrases2} index={index} />
+            </div>
           </div>
-
-          <div className="hidden md:flex w-[32rem] flex-col h-[3rem]">
-            <AnimatedText phrases={phrases1} index={index} onAnimationEnd={handleAnimationEnd} />
-            <AnimatedText phrases={phrases2} index={index} />
-          </div>
-          
           <div className="hidden md:flex items-center space-x-1">
             <Button 
               variant="ghost" 
@@ -100,9 +100,21 @@ const Navigation: React.FC = () => {
           </div>
 
           <div className="md:hidden">
-            <Button variant="ghost" size="sm">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="p-2 rounded-xl hover:bg-primary/10 hover:scale-105 transition-all duration-300"
+            >
+              <svg
+                className="w-7 h-7 text-primary"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
+                <path d="M4 4h20M4 12h20M4 20h20" />
               </svg>
             </Button>
           </div>

@@ -126,7 +126,7 @@ const Navigation: React.FC = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex flex-row lg:flex-row md:flex-col items-center justify-between">
           <div className="flex flex-col lg:flex-row lg:w-full items-center lg:justify-between py-4 lg:py-0 w-full">
-            <div className="hidden text-xl font-bold text-primary-glow font-mono pb-2 lg:pb-0 md:block">
+            <div className="hidden text-xl font-bold text-primary-glow font-mono pb-2 lg:pb-0 md:block sm:block sm:pb-0">
               &lt;Portfolio/&gt;
             </div>
             <div className="hidden md:flex flex-col h-[3rem] w-[460px] lg:w-[460px] px-6">
@@ -196,12 +196,9 @@ const Navigation: React.FC = () => {
           display: isMenuOpen ? 'block' : 'none',
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
-          // Asegurar que el menú siempre ocupe el 100% del viewport
           height: '100vh',
-          // Forzar hardware acceleration
           backfaceVisibility: 'hidden',
           WebkitBackfaceVisibility: 'hidden',
-          // Mejorar rendimiento
           willChange: 'transform, opacity'
         }}
         role="dialog"

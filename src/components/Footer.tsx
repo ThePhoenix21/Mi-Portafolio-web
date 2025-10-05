@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
               </svg>
             </a>
             <a 
-              href="https://www.linkedin.com/in/james-cordova-camones-6379b0226" 
+              href="https://www.linkedin.com/in/james-cristhofer-cordova-camones-6379b0226" 
               className="text-muted-foreground hover:text-primary-glow transition-colors"
               aria-label="LinkedIn"
               target="_blank"

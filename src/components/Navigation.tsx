@@ -42,7 +42,7 @@ const Navigation: React.FC = () => {
         if (currentScrollY < 50) {
           // Cerca del inicio, siempre mostrar
           setShouldHideNav(false);
-        } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        } else if (currentScrollY > lastScrollY && currentScrollY > 50) {
           // Scroll hacia abajo, ocultar
           setShouldHideNav(true);
         } else if (currentScrollY < lastScrollY) {

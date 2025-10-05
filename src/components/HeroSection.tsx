@@ -17,19 +17,21 @@ const HeroSection: React.FC = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="flex justify-center text-6xl md:text-7xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent ">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <h1 className="flex flex-wrap justify-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-primary bg-clip-text text-transparent leading-tight">
             James Cordova
           </h1>
-          <h2 className="text-4xl md:text-4xl font-bold mb-8 text-foreground flex justify-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-foreground/90 flex justify-center">
             desarrollador web
           </h2>
           
-          <div className="mb-12 max-w-2xl mx-auto h-40">
-          <TypewriterText 
-            text="Hola, soy un entusiasta de la tecnología con pasión por el desarrollo web. Me encanta aprender sobre nuevas tecnologías y convertir ideas en interfaces útiles. Soy autodidacta y siempre estoy buscando nuevos retos para mejorar mis habilidades." 
-            speed={30} 
-          />
+          <div className="mb-8 sm:mb-12 max-w-2xl mx-auto min-h-[120px] sm:min-h-[160px] px-4 sm:px-0">
+            <div className="text-center text-sm sm:text-base md:text-lg text-foreground/90 leading-relaxed">
+              <TypewriterText 
+                text="Hola, soy un entusiasta de la tecnología con pasión por el desarrollo web. Me encanta aprender sobre nuevas tecnologías y convertir ideas en interfaces útiles. Soy autodidacta y siempre estoy buscando nuevos retos para mejorar mis habilidades." 
+                speed={30} 
+              />
+            </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

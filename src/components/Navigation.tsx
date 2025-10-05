@@ -27,15 +27,35 @@ const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [index, setIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [shouldHideNav, setShouldHideNav] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      const isMediumScreen = window.innerWidth >= 768 && window.innerWidth <= 1024;
+      
+      setIsScrolled(currentScrollY > 50);
+      
+      if (isMediumScreen) {
+        if (currentScrollY < 50) {
+          // Cerca del inicio, siempre mostrar
+          setShouldHideNav(false);
+        } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          // Scroll hacia abajo, ocultar
+          setShouldHideNav(true);
+        } else if (currentScrollY < lastScrollY) {
+          // Scroll hacia arriba, mostrar
+          setShouldHideNav(true);
+        }
+      }
+      
+      setLastScrollY(currentScrollY);
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   // Manejar el scroll y posición al abrir/cerrar el menú
   useEffect(() => {
@@ -120,13 +140,14 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'glass shadow-card' : 'bg-transparent'
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 transform ${
+      isScrolled ? 'glass shadow-card h-16' : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex flex-row lg:flex-row md:flex-col items-center justify-between">
-          <div className="flex flex-col lg:flex-row lg:w-full items-center lg:justify-between py-4 lg:py-0 w-full">
-            <div className="hidden text-xl font-bold text-primary-glow font-mono pb-2 lg:pb-0 md:block sm:block sm:pb-0">
+          <div className={`flex flex-col lg:flex-row lg:w-full items-center lg:justify-between py-4 lg:py-0 w-full transition-all duration-300 transform ${
+            shouldHideNav ? 'md:-translate-y-full md:opacity-0 md:invisible' : ''}`}>
+            <div className="text-xl font-bold text-primary-glow font-mono pb-2 lg:pb-0 md:block sm:block sm:pb-0">
               &lt;Portfolio/&gt;
             </div>
             <div className="hidden md:flex flex-col h-[3rem] w-[460px] lg:w-[460px] px-6">
@@ -134,9 +155,11 @@ const Navigation: React.FC = () => {
               <AnimatedText phrases={phrases2} index={index} />
             </div>
           </div>
+
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className={`hidden md:flex items-center space-x-1 ${
+            isScrolled ? 'absolute top-4' : ''}`}>
             {navLinks.map((link) => (
               <Button 
                 key={link.id}

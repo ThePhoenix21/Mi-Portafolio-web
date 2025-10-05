@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center">
+    <section id="home" className="min-h-screen flex items-center justify-center pt-60">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h1 className="flex flex-wrap justify-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-primary bg-clip-text text-transparent leading-tight">
             James Cordova

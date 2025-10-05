@@ -29,11 +29,12 @@ const Navigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [shouldHideNav, setShouldHideNav] = useState(false);
+  const [isMediumScreen, setIsMediumScreen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const isMediumScreen = window.innerWidth >= 768 && window.innerWidth <= 1024;
+      setIsMediumScreen(window.innerWidth >= 768 && window.innerWidth <= 1024);
       
       setIsScrolled(currentScrollY > 50);
       
@@ -141,7 +142,7 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 transform ${
-      isScrolled ? 'glass shadow-card h-16' : 'bg-transparent'
+      isScrolled ? 'glass shadow-card h-20' : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex flex-row lg:flex-row md:flex-col items-center justify-between">
@@ -159,7 +160,7 @@ const Navigation: React.FC = () => {
           
           {/* Desktop Navigation */}
           <div className={`hidden md:flex items-center space-x-1 ${
-            isScrolled ? 'absolute top-4' : ''}`}>
+            isScrolled && isMediumScreen ? 'absolute top-5' : ''}`}>
             {navLinks.map((link) => (
               <Button 
                 key={link.id}

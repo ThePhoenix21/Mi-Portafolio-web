@@ -16,7 +16,8 @@ const ContactSection: React.FC = () => {
     apellido: '',
     email: '',
     asunto: '',
-    mensaje: ''
+    mensaje: '',
+    toEmail: '',
   });
 
 
@@ -63,7 +64,7 @@ const ContactSection: React.FC = () => {
       }
 
       setSubmitStatus({ success: true, message: '¡Mensaje enviado con éxito!' });
-      setFormData({ nombre: '', apellido: '', email: '', asunto: '', mensaje: '' });
+      setFormData({ nombre: '', apellido: '', email: '', asunto: '', mensaje: '', toEmail: `${import.meta.env.PERSONAL_EMAIL}` });
 
     } catch (error) {
       setSubmitStatus({ success: false, message: error instanceof Error ? error.message : 'Error desconocido' });

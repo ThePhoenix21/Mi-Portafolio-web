@@ -17,7 +17,7 @@ const ContactSection: React.FC = () => {
     email: '',
     asunto: '',
     mensaje: '',
-    toEmail: '',
+    toEmail: `${import.meta.env.PERSONAL_EMAIL}`,
   });
 
 
@@ -51,6 +51,7 @@ const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    console.log("datos a enviar: ",formData);
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
         method: 'POST',
@@ -64,7 +65,7 @@ const ContactSection: React.FC = () => {
       }
 
       setSubmitStatus({ success: true, message: '¡Mensaje enviado con éxito!' });
-      setFormData({ nombre: '', apellido: '', email: '', asunto: '', mensaje: '', toEmail: `${import.meta.env.PERSONAL_EMAIL}` });
+      setFormData({ nombre: '', apellido: '', email: '', asunto: '', mensaje: '', toEmail: '' });
 
     } catch (error) {
       setSubmitStatus({ success: false, message: error instanceof Error ? error.message : 'Error desconocido' });

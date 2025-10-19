@@ -96,35 +96,40 @@ export const createDownloadCVHandler = () => {
     if (isDownloading) return;
     isDownloading = true;
 
-    // Asegurarse de que la URL tenga el protocolo
-    let cvUrl = import.meta.env.VITE_CV_URL || '';
-    if (cvUrl && !cvUrl.startsWith('http')) {
-      cvUrl = `https://${cvUrl.replace(/^\/\//, '')}`;
-    }
-
-    console.log('URL del CV procesada:', cvUrl);
-
     try {
-      // Primero verificamos si el recurso está disponible
-      const response = await fetch(cvUrl, { 
-        method: 'HEAD',
-        mode: 'cors',
-        cache: 'no-cache'
-      });
+      // Asegurarse de que la URL sea absoluta
+      let cvUrl = import.meta.env.VITE_CV_URL || '';
       
-      if (!response.ok) {
-        console.error('Error en la respuesta:', response.status, response.statusText);
-        throw new Error('No se pudo acceder al archivo CV');
+      // Si la URL no empieza con http, asumimos que es relativa a la raíz
+      if (!cvUrl.startsWith('http')) {
+        // Si empieza con //, añadimos https:
+        if (cvUrl.startsWith('//')) {
+          cvUrl = `https:${cvUrl}`;
+        } else {
+          // Si es una ruta relativa, la hacemos absoluta con la URL base
+          const baseUrl = window.location.origin;
+          cvUrl = `${baseUrl}/${cvUrl.replace(/^\//, '')}`;
+        }
       }
+
+      console.log('URL del CV procesada:', cvUrl);
       
-      // Si el archivo existe, lo abrimos en una nueva pestaña
-      const newWindow = window.open(cvUrl, '_blank', 'noopener,noreferrer');
+      // Crear un enlace temporal para forzar la descarga
+      const link = document.createElement('a');
+      link.href = cvUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
       
-      // Si el navegador bloquea la apertura de ventanas, mostramos un mensaje
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-        // Alternativa: abrir en la misma pestaña
-        window.location.href = import.meta.env.VITE_CV_URL;
-      }
+      // Forzar la descarga con un nombre de archivo específico
+      link.download = 'CV-James-Cordova.pdf';
+      
+      // Añadir al DOM, hacer clic y limpiar
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // También intentamos abrir en una nueva pestaña como respaldo
+      window.open(cvUrl, '_blank', 'noopener,noreferrer');
     } catch (error) {
       console.error('Error al abrir el CV:', error);
       // Mostrar mensaje de error al usuario

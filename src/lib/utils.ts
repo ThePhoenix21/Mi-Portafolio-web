@@ -97,43 +97,75 @@ export const createDownloadCVHandler = () => {
     isDownloading = true;
 
     try {
-      // Asegurarse de que la URL sea absoluta
-      let cvUrl = import.meta.env.VITE_CV_URL || '';
+      // Obtener la URL del CV del entorno
+      const cvUrl = import.meta.env.VITE_CV_URL;
       
-      // Si la URL no empieza con http, asumimos que es relativa a la raíz
-      if (!cvUrl.startsWith('http')) {
-        // Si empieza con //, añadimos https:
-        if (cvUrl.startsWith('//')) {
-          cvUrl = `https:${cvUrl}`;
-        } else {
-          // Si es una ruta relativa, la hacemos absoluta con la URL base
-          const baseUrl = window.location.origin;
-          cvUrl = `${baseUrl}/${cvUrl.replace(/^\//, '')}`;
-        }
+      if (!cvUrl) {
+        throw new Error('La URL del CV no está configurada');
       }
 
-      console.log('URL del CV procesada:', cvUrl);
+      // Verificar si la URL es válida
+      const url = new URL(cvUrl.startsWith('http') ? cvUrl : `https://${cvUrl}`);
       
-      // Crear un enlace temporal para forzar la descarga
-      const link = document.createElement('a');
-      link.href = cvUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
+      console.log('Intentando descargar CV desde:', url.toString());
       
-      // Forzar la descarga con un nombre de archivo específico
-      link.download = 'CV-James-Cordova.pdf';
+      // Opción 1: Usando fetch y Blob para forzar la descarga
+      try {
+        const response = await fetch(url.toString(), {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/pdf',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        // Crear enlace temporal
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', 'CV-James-Cordova.pdf');
+        
+        // Añadir al documento, hacer clic y limpiar
+        document.body.appendChild(link);
+        link.click();
+        
+        // Limpiar
+        setTimeout(() => {
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(blobUrl);
+        }, 100);
+        
+        return; // Salir si la descarga fue exitosa
+      } catch (fetchError) {
+        console.warn('No se pudo descargar el CV con fetch, intentando método alternativo...', fetchError);
+      }
       
-      // Añadir al DOM, hacer clic y limpiar
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Opción 2: Método alternativo si falla fetch
+      const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
       
-      // También intentamos abrir en una nueva pestaña como respaldo
-      window.open(cvUrl, '_blank', 'noopener,noreferrer');
+      // Si el navegador bloquea la apertura de ventanas
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Crear un enlace temporal como último recurso
+        const link = document.createElement('a');
+        link.href = url.toString();
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => document.body.removeChild(link), 100);
+      }
+      
     } catch (error) {
-      console.error('Error al abrir el CV:', error);
-      // Mostrar mensaje de error al usuario
-      alert('No se pudo abrir el CV. Por favor, inténtalo de nuevo más tarde o contáctame directamente.');
+      console.error('Error al intentar descargar el CV:', error);
+      alert('No se pudo abrir el CV. Por favor, inténtalo de nuevo o contáctame directamente en jamescorcam@gmail.com');
     } finally {
       // Liberar después de 1.5 segundos
       timeoutId = setTimeout(() => {

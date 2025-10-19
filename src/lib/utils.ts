@@ -96,20 +96,29 @@ export const createDownloadCVHandler = () => {
     if (isDownloading) return;
     isDownloading = true;
 
-    // Debug: Mostrar la URL que se está intentando acceder
-    console.log('URL del CV desde VITE_CV_URL:', import.meta.env.VITE_CV_URL);
-    console.log('Todas las variables de entorno:', import.meta.env);
+    // Asegurarse de que la URL tenga el protocolo
+    let cvUrl = import.meta.env.VITE_CV_URL || '';
+    if (cvUrl && !cvUrl.startsWith('http')) {
+      cvUrl = `https://${cvUrl.replace(/^\/\//, '')}`;
+    }
+
+    console.log('URL del CV procesada:', cvUrl);
 
     try {
       // Primero verificamos si el recurso está disponible
-      const response = await fetch(import.meta.env.VITE_CV_URL, { method: 'HEAD' });
+      const response = await fetch(cvUrl, { 
+        method: 'HEAD',
+        mode: 'cors',
+        cache: 'no-cache'
+      });
       
       if (!response.ok) {
+        console.error('Error en la respuesta:', response.status, response.statusText);
         throw new Error('No se pudo acceder al archivo CV');
       }
       
       // Si el archivo existe, lo abrimos en una nueva pestaña
-      const newWindow = window.open(import.meta.env.VITE_CV_URL, '_blank', 'noopener,noreferrer');
+      const newWindow = window.open(cvUrl, '_blank', 'noopener,noreferrer');
       
       // Si el navegador bloquea la apertura de ventanas, mostramos un mensaje
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {

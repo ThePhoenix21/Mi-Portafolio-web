@@ -88,43 +88,21 @@ type DownloadHandler = {
   isDownloading: boolean;
   setUpdateState: (updater: (value: boolean) => void) => void;
 };
-interface DownloadCVHandler {
-  handler: () => Promise<void>;
-  cleanup: () => void;
-}
-
-/**
- * Crea un manejador para descargar el CV con manejo de estado y limpieza
- * @returns {DownloadCVHandler} Objeto con las funciones handler y cleanup
- */
-export const createDownloadCVHandler = (): DownloadCVHandler => {
+export const createDownloadCVHandler = () => {
   let isDownloading = false;
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
-  let activeLink: HTMLAnchorElement | null = null;
 
-  const cleanupResources = () => {
-    if (activeLink) {
-      document.body.removeChild(activeLink);
-      activeLink = null;
-    }
-  };
-
-  const handler = async (): Promise<void> => {
+  const handler = async () => {
     if (isDownloading) return;
-    
     isDownloading = true;
-    cleanupResources();
 
     try {
       const cvUrl = import.meta.env.VITE_CV_URL;
-      if (!cvUrl) {
-        throw new Error('La URL del CV no está configurada en las variables de entorno');
-      }
+      if (!cvUrl) throw new Error('La URL del CV no está configurada');
 
-      // Asegurar que la URL sea válida
       const url = new URL(cvUrl.startsWith('http') ? cvUrl : `https://${cvUrl}`);
-      
-      // Método 1: Descarga directa con fetch + blob (funciona en la mayoría de navegadores modernos)
+
+      // Intentar descarga con fetch (método principal)
       try {
         const response = await fetch(url.toString(), {
           method: 'GET',
@@ -132,79 +110,50 @@ export const createDownloadCVHandler = (): DownloadCVHandler => {
           cache: 'no-cache',
           headers: { 'Content-Type': 'application/pdf' },
         });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
-        }
-
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        
-        activeLink = document.createElement('a');
-        activeLink.href = blobUrl;
-        activeLink.download = 'CV-James-Cordova.pdf';
-        activeLink.style.display = 'none';
-        
-        document.body.appendChild(activeLink);
-        activeLink.click();
-        
-        // Limpiar después de un tiempo
+        const blobUrl = window.URL.createObjectURL(await response.blob());
+        const link = Object.assign(document.createElement('a'), {
+          href: blobUrl,
+          download: 'CV-James-Cordova.pdf',
+        });
+        document.body.append(link);
+        link.click();
         setTimeout(() => {
-          cleanupResources();
-          if (blobUrl) window.URL.revokeObjectURL(blobUrl);
+          link.remove();
+          URL.revokeObjectURL(blobUrl);
         }, 100);
-        
         return;
-      } catch (fetchError) {
-        console.warn('No se pudo descargar con fetch, intentando método alternativo...', fetchError);
+      } catch (e) {
+        console.warn('Fallo con fetch, intentando método alternativo...', e);
       }
 
-      // Método 2: Abrir en nueva pestaña si falla la descarga directa
-      try {
-        const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
-        
-        // Si el navegador bloquea la apertura de ventanas emergentes
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-          throw new Error('No se pudo abrir la ventana emergente');
-        }
-      } catch (windowError) {
-        console.warn('No se pudo abrir en nueva ventana, intentando último método...', windowError);
-        
-        // Último recurso: Crear un enlace temporal
-        activeLink = document.createElement('a');
-        activeLink.href = url.toString();
-        activeLink.target = '_blank';
-        activeLink.rel = 'noopener noreferrer';
-        activeLink.style.display = 'none';
-        
-        document.body.appendChild(activeLink);
-        activeLink.click();
+      // Fallback: abrir en nueva pestaña
+      const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        const link = Object.assign(document.createElement('a'), {
+          href: url.toString(),
+          target: '_blank',
+          rel: 'noopener noreferrer',
+        });
+        document.body.append(link);
+        link.click();
+        setTimeout(() => link.remove(), 100);
       }
+
     } catch (error) {
-      console.error('Error al procesar la descarga del CV:', error);
-      alert('No se pudo abrir el CV. Por favor, inténtalo de nuevo o contáctame en jamescorcam@gmail.com');
+      console.error('Error al descargar el CV:', error);
+      alert('No se pudo abrir el CV. Intenta de nuevo o contáctame en jamescorcam@gmail.com');
     } finally {
-      // Resetear el estado después de un tiempo
-      timeoutId = setTimeout(() => {
-        cleanupResources();
-        isDownloading = false;
-      }, 1500);
+      timeoutId = setTimeout(() => (isDownloading = false), 1500);
     }
   };
 
-  const cleanup = (): void => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      timeoutId = null;
-    }
-    cleanupResources();
+  const cleanup = () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = null;
     isDownloading = false;
   };
-
-  // Limpiar al desmontar el componente
-  if (typeof window !== 'undefined') {
-    window.addEventListener('beforeunload', cleanup);
-  }
 
   return { handler, cleanup };
 };

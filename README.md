@@ -165,13 +165,7 @@ The portfolio is fully responsive with breakpoints for:
 
 ## 🚀 Deployment
 
-### Using Lovable
-
-1. Open your [Lovable Project](https://lovable.dev)
-2. Click "Share" → "Publish"
-3. Your portfolio will be live with a custom URL
-
-### Manual Deployment
+### Despliegue Manual
 
 1. **Build the project**
    ```bash

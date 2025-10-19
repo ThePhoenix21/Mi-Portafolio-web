@@ -96,15 +96,23 @@ export const createDownloadCVHandler = () => {
     if (isDownloading) return;
 
     isDownloading = true;
+    
+    // Abrir en nueva pestaña
+    const newWindow = window.open(import.meta.env.VITE_CV_URL, '_blank', 'noopener,noreferrer');
+    
+    // Si el navegador bloquea la apertura de ventanas, ofrecemos una alternativa
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      // Si no se pudo abrir en nueva pestaña, intentamos con un enlace temporal
+      const link = document.createElement('a');
+      link.href = import.meta.env.VITE_CV_URL;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
-    const link = document.createElement('a');
-    link.href = import.meta.env.VITE_CV_URL;
-    link.download = 'CV-James-Cordova.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // liberamos después de 3 segundos
+    // Liberar después de 1.5 segundos
     timeoutId = setTimeout(() => {
       isDownloading = false;
     }, 1500);

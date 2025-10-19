@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useInViewAnimation } from '../hooks/useInViewAnimation';
 import { createDownloadCVHandler, scrollToSection } from '@/lib/utils';
@@ -6,13 +6,26 @@ import { TypewriterText } from '../lib/AnimatedTextOnce';
 
 const HeroSection: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState(false);
-  const downloadHandler = createDownloadCVHandler();
+  const [downloadHandler] = useState(() => createDownloadCVHandler());
+
+  // Limpieza al desmontar el componente
+  useEffect(() => {
+    return () => {
+      downloadHandler.cleanup();
+    };
+  }, [downloadHandler]);
 
   const handleClick = () => {
     if (isDownloading) return;
     setIsDownloading(true);
     downloadHandler.handler();
-    setTimeout(() => setIsDownloading(false), 1500);
+    
+    // Restablecer el estado después de 1.5 segundos
+    const timer = setTimeout(() => {
+      setIsDownloading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
   };
 
   return (

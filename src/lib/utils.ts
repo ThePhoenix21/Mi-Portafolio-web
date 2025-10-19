@@ -98,7 +98,7 @@ export const createDownloadCVHandler = () => {
     isDownloading = true;
 
     const link = document.createElement('a');
-    link.href = '/cv-james-cordova.pdf';
+    link.href = import.meta.env.VITE_CV_URL;
     link.download = 'CV-James-Cordova.pdf';
     document.body.appendChild(link);
     link.click();

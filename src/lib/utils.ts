@@ -88,99 +88,123 @@ type DownloadHandler = {
   isDownloading: boolean;
   setUpdateState: (updater: (value: boolean) => void) => void;
 };
-export const createDownloadCVHandler = () => {
+interface DownloadCVHandler {
+  handler: () => Promise<void>;
+  cleanup: () => void;
+}
+
+/**
+ * Crea un manejador para descargar el CV con manejo de estado y limpieza
+ * @returns {DownloadCVHandler} Objeto con las funciones handler y cleanup
+ */
+export const createDownloadCVHandler = (): DownloadCVHandler => {
   let isDownloading = false;
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let activeLink: HTMLAnchorElement | null = null;
 
-  const handler = async () => {
+  const cleanupResources = () => {
+    if (activeLink) {
+      document.body.removeChild(activeLink);
+      activeLink = null;
+    }
+  };
+
+  const handler = async (): Promise<void> => {
     if (isDownloading) return;
+    
     isDownloading = true;
+    cleanupResources();
 
     try {
-      // Obtener la URL del CV del entorno
       const cvUrl = import.meta.env.VITE_CV_URL;
-      
       if (!cvUrl) {
-        throw new Error('La URL del CV no está configurada');
+        throw new Error('La URL del CV no está configurada en las variables de entorno');
       }
 
-      // Verificar si la URL es válida
+      // Asegurar que la URL sea válida
       const url = new URL(cvUrl.startsWith('http') ? cvUrl : `https://${cvUrl}`);
       
-      console.log('Intentando descargar CV desde:', url.toString());
-      
-      // Opción 1: Usando fetch y Blob para forzar la descarga
+      // Método 1: Descarga directa con fetch + blob (funciona en la mayoría de navegadores modernos)
       try {
         const response = await fetch(url.toString(), {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/pdf',
-          },
+          headers: { 'Content-Type': 'application/pdf' },
         });
 
         if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
+          throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
         }
 
         const blob = await response.blob();
         const blobUrl = window.URL.createObjectURL(blob);
         
-        // Crear enlace temporal
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.setAttribute('download', 'CV-James-Cordova.pdf');
+        activeLink = document.createElement('a');
+        activeLink.href = blobUrl;
+        activeLink.download = 'CV-James-Cordova.pdf';
+        activeLink.style.display = 'none';
         
-        // Añadir al documento, hacer clic y limpiar
-        document.body.appendChild(link);
-        link.click();
+        document.body.appendChild(activeLink);
+        activeLink.click();
         
-        // Limpiar
+        // Limpiar después de un tiempo
         setTimeout(() => {
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(blobUrl);
+          cleanupResources();
+          if (blobUrl) window.URL.revokeObjectURL(blobUrl);
         }, 100);
         
-        return; // Salir si la descarga fue exitosa
+        return;
       } catch (fetchError) {
-        console.warn('No se pudo descargar el CV con fetch, intentando método alternativo...', fetchError);
+        console.warn('No se pudo descargar con fetch, intentando método alternativo...', fetchError);
       }
-      
-      // Opción 2: Método alternativo si falla fetch
-      const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
-      
-      // Si el navegador bloquea la apertura de ventanas
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-        // Crear un enlace temporal como último recurso
-        const link = document.createElement('a');
-        link.href = url.toString();
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        setTimeout(() => document.body.removeChild(link), 100);
+
+      // Método 2: Abrir en nueva pestaña si falla la descarga directa
+      try {
+        const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
+        
+        // Si el navegador bloquea la apertura de ventanas emergentes
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          throw new Error('No se pudo abrir la ventana emergente');
+        }
+      } catch (windowError) {
+        console.warn('No se pudo abrir en nueva ventana, intentando último método...', windowError);
+        
+        // Último recurso: Crear un enlace temporal
+        activeLink = document.createElement('a');
+        activeLink.href = url.toString();
+        activeLink.target = '_blank';
+        activeLink.rel = 'noopener noreferrer';
+        activeLink.style.display = 'none';
+        
+        document.body.appendChild(activeLink);
+        activeLink.click();
       }
-      
     } catch (error) {
-      console.error('Error al intentar descargar el CV:', error);
-      alert('No se pudo abrir el CV. Por favor, inténtalo de nuevo o contáctame directamente en jamescorcam@gmail.com');
+      console.error('Error al procesar la descarga del CV:', error);
+      alert('No se pudo abrir el CV. Por favor, inténtalo de nuevo o contáctame en jamescorcam@gmail.com');
     } finally {
-      // Liberar después de 1.5 segundos
+      // Resetear el estado después de un tiempo
       timeoutId = setTimeout(() => {
+        cleanupResources();
         isDownloading = false;
       }, 1500);
     }
   };
 
-  const cleanup = () => {
+  const cleanup = (): void => {
     if (timeoutId) {
       clearTimeout(timeoutId);
       timeoutId = null;
     }
+    cleanupResources();
     isDownloading = false;
   };
+
+  // Limpiar al desmontar el componente
+  if (typeof window !== 'undefined') {
+    window.addEventListener('beforeunload', cleanup);
+  }
 
   return { handler, cleanup };
 };

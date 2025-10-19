@@ -92,30 +92,40 @@ export const createDownloadCVHandler = () => {
   let isDownloading = false;
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-  const handler = () => {
+  const handler = async () => {
     if (isDownloading) return;
-
     isDownloading = true;
-    
-    // Abrir en nueva pestaña
-    const newWindow = window.open(import.meta.env.VITE_CV_URL, '_blank', 'noopener,noreferrer');
-    
-    // Si el navegador bloquea la apertura de ventanas, ofrecemos una alternativa
-    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-      // Si no se pudo abrir en nueva pestaña, intentamos con un enlace temporal
-      const link = document.createElement('a');
-      link.href = import.meta.env.VITE_CV_URL;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
 
-    // Liberar después de 1.5 segundos
-    timeoutId = setTimeout(() => {
-      isDownloading = false;
-    }, 1500);
+    // Debug: Mostrar la URL que se está intentando acceder
+    console.log('URL del CV desde VITE_CV_URL:', import.meta.env.VITE_CV_URL);
+    console.log('Todas las variables de entorno:', import.meta.env);
+
+    try {
+      // Primero verificamos si el recurso está disponible
+      const response = await fetch(import.meta.env.VITE_CV_URL, { method: 'HEAD' });
+      
+      if (!response.ok) {
+        throw new Error('No se pudo acceder al archivo CV');
+      }
+      
+      // Si el archivo existe, lo abrimos en una nueva pestaña
+      const newWindow = window.open(import.meta.env.VITE_CV_URL, '_blank', 'noopener,noreferrer');
+      
+      // Si el navegador bloquea la apertura de ventanas, mostramos un mensaje
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Alternativa: abrir en la misma pestaña
+        window.location.href = import.meta.env.VITE_CV_URL;
+      }
+    } catch (error) {
+      console.error('Error al abrir el CV:', error);
+      // Mostrar mensaje de error al usuario
+      alert('No se pudo abrir el CV. Por favor, inténtalo de nuevo más tarde o contáctame directamente.');
+    } finally {
+      // Liberar después de 1.5 segundos
+      timeoutId = setTimeout(() => {
+        isDownloading = false;
+      }, 1500);
+    }
   };
 
   const cleanup = () => {

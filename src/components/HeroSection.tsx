@@ -15,17 +15,27 @@ const HeroSection: React.FC = () => {
     };
   }, [downloadHandler]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (isDownloading) return;
-    setIsDownloading(true);
-    downloadHandler.handler();
     
-    // Restablecer el estado después de 1.5 segundos
-    const timer = setTimeout(() => {
-      setIsDownloading(false);
-    }, 1500);
-    
-    return () => clearTimeout(timer);
+    try {
+      setIsDownloading(true);
+      await new Promise<void>((resolve) => {
+        downloadHandler.handler();
+        // Esperamos un momento para asegurar que la descarga se inicie
+        setTimeout(resolve, 1000);
+      });
+    } catch (error) {
+      console.error('Error al manejar la descarga:', error);
+      // El manejador ya muestra un alerta de error
+    } finally {
+      // Restablecer el estado después de 1.5 segundos
+      const timer = setTimeout(() => {
+        setIsDownloading(false);
+      }, 1500);
+      
+      return () => clearTimeout(timer);
+    }
   };
 
   return (

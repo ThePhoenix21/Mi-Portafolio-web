@@ -40,7 +40,9 @@ const HeroSection: React.FC = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center pt-28 md:pt-60 lg:pt-40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <video className="absolute top-0 left-0 w-full h-full object-cover" src="public/programming.mp4" autoPlay loop muted></video>
+      <div className="absolute inset-0 bg-black opacity-80"></div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 z-10">
           <h1 className="flex flex-wrap justify-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-primary bg-clip-text text-transparent leading-tight">
             James Cordova
           </h1>

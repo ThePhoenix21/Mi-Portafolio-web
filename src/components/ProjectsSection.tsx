@@ -14,28 +14,7 @@ const ProjectsSection: React.FC = () => {
       technologies: ['TypeScript', 'Next.js', 'TailwindCSS', 'NestJS', 'PostgreSQL', 'Prisma'],
       liveUrl: 'https://tecnicentro-jr-projects.vercel.app',
       githubUrl: 'https://github.com/ThePhoenix21/TecnicentroJRBackend',
-    },
-    {
-      title: 'Proximamente...',
-      description: 'este espacio esta reservado para mis proyectos futuros.',
-      technologies: ['Vue.js', 'Express', 'PostgreSQL', 'Redis', 'WebRTC'],
-      liveUrl: '#',
-      githubUrl: '#',
-    },
-    {
-      title: 'Proximamente...',
-      description: 'este espacio esta reservado para mis proyectos futuros.',
-      technologies: ['Python', 'Django', 'TensorFlow', 'D3.js', 'Docker'],
-      liveUrl: '#',
-      githubUrl: '#',
-    },
-    {
-      title: 'Proximamente...',
-      description: 'este espacio esta reservado para mis proyectos futuros.',
-      technologies: ['React Native', 'Firebase', 'GraphQL', 'Apollo'],
-      liveUrl: '#',
-      githubUrl: '#',
-    },
+    }
   ];
 
   return (

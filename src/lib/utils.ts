@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // Funcion para calcular la experiencia laboral desde el 1 de mayo de 2023
 export const calculateYearsOfExperience = (): number => {
-  const startDate = new Date('2022-05-01');
+  const startDate = new Date('2023-05-01');
   const currentDate = new Date();
   
   let years = currentDate.getFullYear() - startDate.getFullYear();

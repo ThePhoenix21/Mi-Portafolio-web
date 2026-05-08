@@ -12,7 +12,7 @@ const ProjectsSection: React.FC = () => {
       title: 'Tecnicentro-JR',
       description: 'aplicacion web para la empresa Tecnicentro, dedicada a la reparacion y mantenimiento de celulares, este proyecto gestiona la informacion de los clientes, los productos y las reparaciones.',
       technologies: ['TypeScript', 'Next.js', 'TailwindCSS', 'NestJS', 'PostgreSQL', 'Prisma'],
-      liveUrl: 'https://tecnicentro-jr-projects.vercel.app',
+      liveUrl: 'https://tecnicentro-jr-frontend.vercel.app/login',
       githubUrl: 'https://github.com/ThePhoenix21/TecnicentroJRBackend',
     }
   ];
